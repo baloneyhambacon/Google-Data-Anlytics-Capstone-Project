@@ -10,7 +10,7 @@ By identifying how casual riders differ from members and the specific characteri
 
 ## Data Source
 
-Data Source
+[Data Source](https://divvy-tripdata.s3.amazonaws.com/index.html)
 
 The data for the past 12 months is stored in 12 separate csv files.  The data is from 12/2020 to 11/2021
 The data comes from a real bike-share company in Chicago called Divvy, and it is available under this [license](https://ride.divvybikes.com/data-license-agreement)
