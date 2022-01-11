@@ -13,7 +13,7 @@ By identifying how casual riders differ from members and the specific characteri
 Data Source
 
 The data for the past 12 months is stored in 12 separate csv files.  The data is from 12/2020 to 11/2021
-The data comes from a real bike-share company in Chicago called Divvy, and it is available under this license 
+The data comes from a real bike-share company in Chicago called Divvy, and it is available under this [license](https://ride.divvybikes.com/data-license-agreement)
 
 At first glance there is a small chunk of data missing for start and end stations. It is unclear whether the missing data is random or systematic. 
 
