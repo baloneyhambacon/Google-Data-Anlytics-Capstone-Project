@@ -1,0 +1,155 @@
+---
+title: "Capstone Case Study 1"
+output: html_document
+---
+
+```{r}
+
+library(tidyverse)
+library(haven)
+library(lubridate)
+library(scales)
+library(moments)
+```
+```{r}
+all_trips <-
+  list.files(pattern='*.csv') %>% 
+  map_df(~read_csv(.))
+
+
+```
+
+
+```{r}
+all_trips
+```
+
+```{r}
+str(all_trips)
+```
+
+```{r}
+#checking counts for member_casual
+member_counts <- all_trips %>% 
+  group_by(member_casual) %>% 
+  summarize(count=n())
+member_counts
+```
+```{r}
+#extracting date values from started_at column for more aggregation opportunities
+all_trips$date <- as.Date(all_trips$started_at) 
+all_trips$month <- format(as.Date(all_trips$date), "%m")
+all_trips$day <- format(as.Date(all_trips$date), "%d")
+all_trips$year <- format(as.Date(all_trips$date), "%Y")
+all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+all_trips$ride_length <- difftime(all_trips$ended_at,all_trips$started_at)
+all_trips
+```
+```{r}
+#adding a column for ride length
+#an important metric for how casual riders and members differ
+all_trips$ride_length <- as.numeric(all_trips$ride_length)
+all_trips
+
+
+```
+```{r}
+#there are some instances where the ride length is negative, likely due to error
+all_trips_cleaned <- all_trips[!all_trips$ride_length<0,]
+all_trips_cleaned
+```
+
+
+
+
+```{r}
+#descriptive statistics on ride length
+summary(all_trips_cleaned$ride_length)
+
+
+#ride length by user type
+ride_length_by_user <- all_trips_cleaned %>% 
+  group_by(member_casual) %>% 
+  summarize(mean_ride_length=mean(ride_length), median_ride_length=median(ride_length))
+ride_length_by_user
+
+```
+```{r}
+#reordering the days of the week for summary
+all_trips_cleaned$day_of_week <- ordered(all_trips_cleaned$day_of_week, levels=c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+
+#ride length by day of week
+ride_length_by_dow <- all_trips_cleaned %>% 
+  group_by(day_of_week) %>% 
+  summarize(mean_ride_length=mean(ride_length), median_ride_length=median(ride_length))
+ride_length_by_dow
+```
+```{r}
+#ride length by user type and day of week
+ride_length_by_userdow <- all_trips_cleaned %>% 
+  group_by(member_casual,day_of_week) %>% 
+  summarize(mean_ride_length=mean(ride_length), median_ride_length=median(ride_length), number_of_rides=n()) 
+ride_length_by_userdow
+
+```
+```{r}
+#visualization for number of rides by rider type and day of week
+ride_length_by_userdow %>% ggplot(aes(x = day_of_week, y = number_of_rides, fill = member_casual)) +
+  geom_col(position = "dodge") +
+  labs(title='Number of rides by rider type', 
+       x='Day of Week') + 
+  scale_y_continuous(name="Number of Rides", labels = comma) +
+  scale_fill_discrete(name = "Rider type")
+  
+```
+```{r}
+#visualization for average ride time by rider type and day of week
+ride_length_by_userdow %>% ggplot(aes(x = day_of_week, y = mean_ride_length, fill = member_casual)) +
+  geom_col(position = "dodge") +
+  labs(title='Average ride time by rider type', 
+       x='Day of Week') + 
+  scale_y_continuous(name="Average Ride Time in seconds", labels = comma) +
+  scale_fill_discrete(name = "Rider type")
+```
+```{r}
+#visualization for median ride time by rider type and day of week
+ride_length_by_userdow %>% ggplot(aes(x = day_of_week, y = median_ride_length, fill = member_casual)) +
+  geom_col(position = "dodge") +
+  labs(title='Median ride time by rider type', 
+       x='Day of Week') + 
+  scale_y_continuous(name="Median Ride Time in seconds", labels = comma) +
+  scale_fill_discrete(name = "Rider type")
+```
+
+
+```{r}
+#checking standard deviation of ride length by rider type
+deviation <- all_trips_cleaned %>% 
+  group_by(member_casual) %>% 
+  summarize(sd_ride_length=sd(ride_length),)
+
+deviation
+
+```
+
+```{r}
+#histogram of ride_length between rider type
+#x axis limited at 7200 seconds (2 hours)
+all_trips_cleaned %>% 
+  ggplot() +
+  geom_histogram(mapping=(aes(x=ride_length, fill=member_casual)),bins=100, position='dodge') +
+  xlim(0,7200) +
+  labs(title='Histogram of ride time by rider type',
+       x='Ride time in seconds') +
+  scale_y_continuous(name="Number of rides", labels = comma) +
+  scale_fill_discrete(name = "Rider type")
+```
+```{r}
+members <- all_trips_cleaned$ride_length[all_trips_cleaned$member_casual=='member']
+skewness(members)
+
+casual <- all_trips_cleaned$ride_length[all_trips_cleaned$member_casual=='casual']
+skewness(casual)
+```
+
+
