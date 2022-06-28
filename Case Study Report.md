@@ -62,7 +62,7 @@ Looking at the number of rides broken down by day of the week, we see that membe
 
 It seems that the ride times of casual riders vary much more than members. Calculating the **standard deviation** of the ride times between rider types confirms that. The sd of ride times for **casual riders is 15794.463 seconds** and for **members it is 1671.007 seconds.** The difference in standard deviations suggests that members use the service far more routinely
 
-The distribution of ride lengths between casual riders and members are also quite different. The difference is visualized in this histogram, with the casual rider distribution being more skewed to the right and the member distribution having a higher peak. 
+The distribution of ride lengths between casual riders and members are also quite different. The difference is visualized in this histogram, with the casual rider distribution being more skewed to the right and the member distribution having a higher peak. This shows that a large proportion of rides taken by members are shorter in ride length.
 
 ![](images/ride_time_histogram.png)
 
