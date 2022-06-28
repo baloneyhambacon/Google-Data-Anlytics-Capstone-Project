@@ -66,7 +66,7 @@ The distribution of ride lengths between casual riders and members are also quit
 
 ![](images/ride_time_histogram.png)
 
-It is interesting to note that average and median ride time for casual riders greatly exceeds that of members across the board. This might be something to look into for further research. The number of rides made by casual members are also fairly consistent throughout the week, which could suggest some regularity in some casual riders’ use of the service. However, we cannot know for sure unless we have data on the usage by individual casual riders. With that additional information we may be able to identify and recommend the membership to a certain type of casual rider that uses the service with some regularity.
+It is interesting to note that average and median ride time for casual riders greatly exceeds that of members across the board. This might be something to look into for further research. The number of rides made by casual members are also fairly consistent throughout the week, which could suggest some regularity in some casual riders’ use of the service. However, we cannot know for sure unless we have individual level data on the usage by casual riders. With that additional information we may be able to identify and recommend the membership to a certain type of casual rider that uses the service with some regularity.
 
 ## Conclusion
 
